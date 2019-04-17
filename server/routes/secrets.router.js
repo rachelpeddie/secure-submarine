@@ -1,6 +1,13 @@
 const express = require('express');
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 const pool = require('../modules/pool');
 const router = express.Router();
+
+// Handles Ajax request for user information if user is authenticated
+router.get('/secrets', rejectUnauthenticated, (req, res) => {
+    // Send back user object from the session (previously queried from the database)
+    res.send(req.secret);
+});
 
 router.get('/', (req, res) => {
     console.log('req.user:', req.user);
